@@ -2,6 +2,7 @@ package com.example.ProfileService;
 
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +34,7 @@ public class ProfileController {
     }
 
     @PutMapping("/PS/profiles")
-    public Profile setProfileName(@RequestBody Profile profile){
+    public Profile setProfileName(@RequestBody @Valid Profile profile){
         for (Profile p : profiles.values()) {
             if(p.getEmail().equals(profile.getEmail()))
                 return null;

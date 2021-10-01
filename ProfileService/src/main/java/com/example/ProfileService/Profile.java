@@ -1,11 +1,18 @@
 package com.example.ProfileService;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+
 public class Profile {
     private long id;
+
+    @NotNull
     private String name;
+
+    @NotNull
+    @Email
     private String email;
     private String description;
-    // Email, description (pas de doublon), ....
 
 
     public Profile(long id, String name, String email, String description) {
