@@ -6,10 +6,10 @@ import javax.validation.constraints.NotNull;
 public class Profile {
     private long id;
 
-    @NotNull
+    @NotNull(message = "Please provide a 'name'")
     private String name;
 
-    @NotNull
+    @NotNull(message = "Please provide a 'email'")
     @Email
     private String email;
     private String description;
