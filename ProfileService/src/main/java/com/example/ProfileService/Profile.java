@@ -1,17 +1,26 @@
 package com.example.ProfileService;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+
 public class Profile {
+    @NotNull
     private long id;
     private String name;
+    @Email
+    @NotNull
+    private String email;
+    private String description;
+
 
     // Email, description (pas de doublon), ....
 
-    public Profile(long id, String name) {
+
+    public Profile(long id, String name, String email, String description) {
         this.id = id;
         this.name = name;
-    }
-
-    public Profile() {
+        this.email = email;
+        this.description = description;
     }
 
     public long getId() {
@@ -30,7 +39,19 @@ public class Profile {
         this.name = name;
     }
 
+    public String getEmail() {
+        return email;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
+    public String getDescription() {
+        return description;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
