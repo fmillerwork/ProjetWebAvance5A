@@ -1,4 +1,4 @@
-package com.example.ProfileService;
+package com.example.ProfileService.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
