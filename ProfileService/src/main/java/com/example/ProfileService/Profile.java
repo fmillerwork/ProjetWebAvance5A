@@ -4,15 +4,16 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 public class Profile {
+    @NotNull
     private long id;
-
-    @NotNull(message = "Please provide a 'name'")
     private String name;
-
-    @NotNull(message = "Please provide a 'email'")
     @Email
+    @NotNull
     private String email;
     private String description;
+
+
+    // Email, description (pas de doublon), ....
 
 
     public Profile(long id, String name, String email, String description) {
@@ -20,9 +21,6 @@ public class Profile {
         this.name = name;
         this.email = email;
         this.description = description;
-    }
-
-    public Profile() {
     }
 
     public long getId() {
@@ -56,5 +54,4 @@ public class Profile {
     public void setDescription(String description) {
         this.description = description;
     }
-
 }
