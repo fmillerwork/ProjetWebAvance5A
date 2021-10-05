@@ -1,6 +1,7 @@
 package com.example.ProfileService.Exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -37,4 +38,8 @@ public class ProfileExceptionController {
         }
         return errors;
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    String jsonNotReadableException(HttpMessageNotReadableException ex) {return ex.getMessage();}
 }
