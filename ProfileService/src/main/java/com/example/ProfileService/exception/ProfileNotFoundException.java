@@ -1,4 +1,4 @@
-package com.example.ProfileService.Exception;
+package com.example.ProfileService.exception;
 
 public class ProfileNotFoundException extends RuntimeException{
     public ProfileNotFoundException(long id){

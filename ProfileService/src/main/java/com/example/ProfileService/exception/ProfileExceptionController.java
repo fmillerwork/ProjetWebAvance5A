@@ -1,6 +1,5 @@
-package com.example.ProfileService.Exception;
+package com.example.ProfileService.exception;
 
-import org.springframework.boot.json.JsonParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;

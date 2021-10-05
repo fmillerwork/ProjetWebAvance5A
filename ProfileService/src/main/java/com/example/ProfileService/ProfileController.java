@@ -1,7 +1,7 @@
 package com.example.ProfileService;
 
-import com.example.ProfileService.Exception.EmailInUseException;
-import com.example.ProfileService.Exception.ProfileNotFoundException;
+import com.example.ProfileService.exception.EmailInUseException;
+import com.example.ProfileService.exception.ProfileNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

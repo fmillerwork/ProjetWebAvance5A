@@ -1,4 +1,4 @@
-package com.example.ProfileService.Exception;
+package com.example.ProfileService.exception;
 
 public class EmailInUseException extends RuntimeException{
     public EmailInUseException(){
