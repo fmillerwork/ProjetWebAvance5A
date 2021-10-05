@@ -31,7 +31,7 @@ class ProfileServiceApplicationTests {
 	}
 
 	@Test
-	public void putProfiles_shouldSucceed() throws Exception{
+	public void postProfiles_shouldSucceed() throws Exception{
 		Profile profile = new Profile(1,"Florian","florian.miller@gmail.com","");
 		ObjectMapper objectMapper = new ObjectMapper();
 		String profile_json = objectMapper.writeValueAsString(profile);
@@ -43,5 +43,39 @@ class ProfileServiceApplicationTests {
 					.andDo(print())
 				.andExpect(status().isOk());
 	}
+
+	@Test
+	public void postProfiles_shouldFailedIfEmailIsNotValid() throws Exception{
+		Profile profile = new Profile(1,"Florian","wrongEmail","");
+		ObjectMapper objectMapper = new ObjectMapper();
+		String profile_json = objectMapper.writeValueAsString(profile);
+
+		this.mockMvc.perform(post("/PS/profiles")
+						.content(profile_json)
+						.contentType(MediaType.APPLICATION_JSON)
+				)
+				.andDo(print())
+				.andExpect(status().isBadRequest());
+	}
+
+	@Test
+	public void postProfiles_shouldFailedAddTwoIdenticalEmail() throws Exception{
+		Profile profile = new Profile(1,"Florian","florian.miller@gmail.com","");
+		ObjectMapper objectMapper = new ObjectMapper();
+		String profile_json = objectMapper.writeValueAsString(profile);
+
+		this.mockMvc.perform(post("/PS/profiles")
+				.content(profile_json)
+				.contentType(MediaType.APPLICATION_JSON)
+		);
+		this.mockMvc.perform(post("/PS/profiles")
+						.content(profile_json)
+						.contentType(MediaType.APPLICATION_JSON)
+				)
+				.andDo(print())
+				.andExpect(status().isConflict());
+	}
+
+
 
 }
