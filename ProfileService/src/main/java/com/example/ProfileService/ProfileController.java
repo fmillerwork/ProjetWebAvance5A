@@ -1,5 +1,7 @@
 package com.example.ProfileService;
 
+import com.example.ProfileService.Exception.EmailInUseException;
+import com.example.ProfileService.Exception.ProfileNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -11,6 +13,8 @@ import java.util.concurrent.atomic.AtomicLong;
 // @PathVariable => dans le chemin vers le endpoint /PS/profiles/{id}/name (id)
 // @RequestBody => dans le corps de la requète /PS/profiles/{id}/name (name) (utile pour envoyer des objets)
 // @RequestParam => dans les paramètres de la requète
+// Post => Ajout
+// Put => Update
 
 @RestController
 public class ProfileController {
@@ -25,6 +29,7 @@ public class ProfileController {
 
     @GetMapping("/PS/profiles/{id}")
     public Profile getProfileById(@PathVariable(value = "id") long id){
+        if(!profiles.containsKey(id)) throw new ProfileNotFoundException(id);
         return profiles.get(id);
     }
 
@@ -33,11 +38,11 @@ public class ProfileController {
         return profiles.get(id).getName();
     }
 
-    @PutMapping("/PS/profiles")
+    @PostMapping("/PS/profiles")
     public Profile setProfileName(@RequestBody @Valid Profile profile){
         for (Profile p : profiles.values()) {
             if(p.getEmail().equals(profile.getEmail()))
-                return null;
+                throw new EmailInUseException();
         }
         long new_id = counter.incrementAndGet();
         profile.setId(new_id);
