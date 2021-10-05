@@ -39,7 +39,7 @@ public class ProfileController {
     }
 
     @PostMapping("/PS/profiles")
-    public Profile setProfileName(@RequestBody @Valid Profile profile){
+    public Profile saveProfile(@RequestBody @Valid Profile profile){
         for (Profile p : profiles.values()) {
             if(p.getEmail().equals(profile.getEmail()))
                 throw new EmailInUseException();
@@ -51,21 +51,20 @@ public class ProfileController {
     }
 
     @PutMapping("/PS/profiles/{id}/name")
-    public void setProfileName(@PathVariable(value = "id") long id, @RequestBody String name){
-        Profile p = profiles.get(id);
-        if(p != null)
-            p.setName(name);
+    public void updateProfileName(@PathVariable(value = "id") long id, @RequestBody String name){
+        if(profiles.containsKey(id)) throw new ProfileNotFoundException(id);
+            profiles.get(id).setName(name);
     }
 
     @PutMapping("/PS/profiles/{id}/description")
-    public void setProfileDescription(@PathVariable(value = "id") long id, @RequestBody String description){
-        Profile p = profiles.get(id);
-        if(p != null)
-            p.setName(description);
+    public void updateProfileDescription(@PathVariable(value = "id") long id, @RequestBody String description){
+        if(profiles.containsKey(id)) throw new ProfileNotFoundException(id);
+        profiles.get(id).setName(description);
     }
 
     @DeleteMapping("/PS/profiles/{id}")
     public void deleteProfile(@PathVariable(value = "id") long id){
+        if(profiles.containsKey(id)) throw new ProfileNotFoundException(id);
         profiles.remove(id);
     }
 }

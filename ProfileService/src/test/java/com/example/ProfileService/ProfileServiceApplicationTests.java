@@ -31,7 +31,7 @@ class ProfileServiceApplicationTests {
 	}
 
 	@Test
-	public void postProfiles_shouldSucceed() throws Exception{
+	public void saveProfile_shouldSucceed() throws Exception{
 		Profile profile = new Profile(1,"Florian","florian.miller@gmail.com","");
 		ObjectMapper objectMapper = new ObjectMapper();
 		String profile_json = objectMapper.writeValueAsString(profile);
@@ -45,7 +45,7 @@ class ProfileServiceApplicationTests {
 	}
 
 	@Test
-	public void postProfiles_shouldFailedIfEmailIsNotValid() throws Exception{
+	public void saveProfile_shouldFailedIfEmailIsNotValid() throws Exception{
 		Profile profile = new Profile(1,"Florian","wrongEmail","");
 		ObjectMapper objectMapper = new ObjectMapper();
 		String profile_json = objectMapper.writeValueAsString(profile);
@@ -59,7 +59,7 @@ class ProfileServiceApplicationTests {
 	}
 
 	@Test
-	public void postProfiles_shouldFailedAddTwoIdenticalEmail() throws Exception{
+	public void saveProfile_shouldFailedAddTwoIdenticalEmail() throws Exception{
 		Profile profile = new Profile(1,"Florian","florian.miller@gmail.com","");
 		ObjectMapper objectMapper = new ObjectMapper();
 		String profile_json = objectMapper.writeValueAsString(profile);
@@ -76,6 +76,10 @@ class ProfileServiceApplicationTests {
 				.andExpect(status().isConflict());
 	}
 
+	@Test
+	public void updateProfileName_shouldSucceedIfNameIsNotNull() throws Exception{
+		// TODO
+	}
 
 
 }
