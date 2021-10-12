@@ -2,7 +2,7 @@ openapi: 3.0.0
 
 info:
   title: Profile Service
-  description : Manage profiles
+  description : Manages profiles
   version: 0.0.1
   
 servers:
@@ -13,7 +13,7 @@ paths:
     get:
       summary: Returns a list of all users.
       responses:
-        '200':
+        200:
           description: All users
           content: 
             application/json:
@@ -29,18 +29,34 @@ paths:
             schema:
               $ref: '#/components/schemas/Profile'
       responses:
-        '200':
+        200:
           description: The profile as created.
           content: 
             application/json:
               schema:
                 $ref: '#/components/schemas/Profile'
-        '409':
+        409:
           description: The email address is already used.
-        '403':
+        403:
           description: The object was not valid.
-        
-          
+  /PS/profiles/{id}:
+    get:
+      description: Return a single profile.
+      parameters:
+        - name: id
+          in: path
+          description: ID of the profile
+          required:
+          schema:
+            type: integer
+      responses:
+        200:
+          description: The profile.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+
 components:
   schemas:
     Profile:
