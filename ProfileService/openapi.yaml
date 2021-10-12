@@ -1,0 +1,67 @@
+openapi: 3.0.0
+
+info:
+  title: Profile Service
+  description : Manage profiles
+  version: 0.0.1
+  
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /PS/profiles:
+    get:
+      summary: Returns a list of all users.
+      responses:
+        '200':
+          description: All users
+          content: 
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/Profile'
+    post:
+      summary: Create a profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Profile'
+      responses:
+        '200':
+          description: The profile as created.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '409':
+          description: The email address is already used.
+        '403':
+          description: The object was not valid.
+        
+          
+components:
+  schemas:
+    Profile:
+      type: object
+      properties:
+        id: 
+          type: integer
+          example: "4"
+        name:
+          type: string
+          example: "Jo le camionneur"
+        email:
+          type: string
+          format: email
+          example : "jojo@gmail.com"
+        description:
+          type: string
+          example: "Bonjour"
+      required:
+        - name
+        - email
+        
+        
+  
