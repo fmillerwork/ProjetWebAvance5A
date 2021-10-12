@@ -26,12 +26,14 @@ public class ProfileController {
 
     private Logger logger = LoggerFactory.getLogger(ProfileController.class);
 
+    //Documentée
     @GetMapping("/PS/profiles")
     public Collection<Profile> getProfiles(){
         logger.trace("GET /PS/profiles");
         return profiles.values();
     }
 
+    //Documentée
     @GetMapping("/PS/profiles/{id}")
     public Profile getProfileById(@PathVariable(value = "id") long id){
         logger.trace("GET /PS/profiles/{id}");
@@ -49,18 +51,21 @@ public class ProfileController {
 //        throw new ProfileNotFoundException(email);
 //    }
 
+    //Documentée
     @GetMapping("/PS/profiles/{id}/name")
     public String getProfileNameById(@PathVariable(value = "id") long id){
         logger.trace("GET /PS/profiles/{id}/name");
         return profiles.get(id).getName();
     }
 
+    //Documentée
     @GetMapping("/PS/profiles/{id}/description")
     public String getProfileDescriptionById(@PathVariable(value = "id") long id){
         logger.trace("GET /PS/profiles/{id}/name");
         return profiles.get(id).getDescription();
     }
 
+    //Documentée
     @PostMapping("/PS/profiles")
     public Profile saveProfile(@RequestBody @Valid Profile profile){
         logger.trace("POST /PS/profiles");
@@ -75,6 +80,7 @@ public class ProfileController {
         return profile;
     }
 
+    //Documentée
     @PutMapping("/PS/profiles/{id}/name")
     public void updateProfileName(@PathVariable(value = "id") long id, @RequestBody String name){
         logger.trace("PUT /PS/profiles/{id}/name");
@@ -84,6 +90,7 @@ public class ProfileController {
         }
     }
 
+    //Documentée
     @PutMapping("/PS/profiles/{id}/description")
     public void updateProfileDescription(@PathVariable(value = "id") long id, @RequestBody String description){
         logger.trace("PUT /PS/profiles/{id}/description");
@@ -93,6 +100,7 @@ public class ProfileController {
         }
     }
 
+    //Documentée
     @DeleteMapping("/PS/profiles/{id}")
     public void deleteProfile(@PathVariable(value = "id") long id){
         logger.trace("DELETE /PS/profiles/{id}");

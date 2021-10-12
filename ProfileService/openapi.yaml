@@ -12,6 +12,7 @@ paths:
   /PS/profiles:
     get:
       summary: Returns a list of all users.
+      description: Returns a list of all users.
       responses:
         200:
           description: All users
@@ -23,6 +24,7 @@ paths:
                   $ref: '#/components/schemas/Profile'
     post:
       summary: Create a profile
+      description: Create a profile
       requestBody:
         content:
           application/json:
@@ -39,16 +41,19 @@ paths:
           description: The email address is already used.
         403:
           description: The object was not valid.
+
   /PS/profiles/{id}:
     get:
+      summary: Return a single profile.
       description: Return a single profile.
       parameters:
         - name: id
           in: path
           description: ID of the profile
-          required:
+          required: true
           schema:
             type: integer
+            example: 1
       responses:
         200:
           description: The profile.
@@ -56,6 +61,115 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Profile'
+        404:
+          description: Profile not found
+    delete:
+      summary: Delete a single profile.
+      description: Delete a single profile.
+      parameters:
+        - name: id
+          in: path
+          description: ID of the profile
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: The profile was deleted.
+        404:
+          description: Profile not found.
+
+  /PS/profiles/{id}/name:
+    get:
+      summary: Return a profile name.
+      description: Return a profile name.
+      parameters:
+        - name: id
+          in: path
+          description: ID of the profile
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: The name of the profile.
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Jo le camionneur"
+        404:
+          description: Profile not found
+    put:
+      summary: Update profile name
+      description: Update profile name
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "Jo le camionneur"
+      parameters:
+        - name: id
+          in: path
+          description: ID of the profile
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: The profile name was updated.
+        404:
+          description: Profile not found
+
+
+  /PS/profiles/{id}/description:
+    get:
+      summary: Return a profile description.
+      description: Return a profile description.
+      parameters:
+        - name: id
+          in: path
+          description: ID of the profile
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: The description of the profile.
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Profile de l'administrateur."
+        403:
+          description: Profile not found
+    put:
+      summary: Update profile description
+      description: Update profile description
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              example: "Profile de l'administrateur."
+      parameters:
+        - name: id
+          in: path
+          description: ID of the profile
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: The profile description was updated.
+        404:
+          description: Profile not found
 
 components:
   schemas:
