@@ -38,8 +38,7 @@ class ProfileServiceApplicationTests {
 
 		this.mockMvc.perform(post("/PS/profiles")
 						.content(profile_json)
-						.contentType(MediaType.APPLICATION_JSON)
-						)
+						.contentType(MediaType.APPLICATION_JSON))
 					.andDo(print())
 				.andExpect(status().isOk());
 	}
