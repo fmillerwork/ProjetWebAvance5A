@@ -55,6 +55,12 @@ public class ProfileController {
         return profiles.get(id).getName();
     }
 
+    @GetMapping("/PS/profiles/{id}/description")
+    public String getProfileDescriptionById(@PathVariable(value = "id") long id){
+        logger.trace("GET /PS/profiles/{id}/name");
+        return profiles.get(id).getDescription();
+    }
+
     @PostMapping("/PS/profiles")
     public Profile saveProfile(@RequestBody @Valid Profile profile){
         logger.trace("POST /PS/profiles");
