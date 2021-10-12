@@ -96,7 +96,7 @@ paths:
         200:
           description: The name of the profile.
           content:
-            application/json:
+            text/plain:
               schema:
                 type: string
                 example: "Jo le camionneur"
@@ -107,7 +107,7 @@ paths:
       description: Update profile name
       requestBody:
         content:
-          application/json:
+          text/plain:
             schema:
               type: string
               example: "Jo le camionneur"
@@ -142,7 +142,7 @@ paths:
         200:
           description: The description of the profile.
           content:
-            application/json:
+            text/plain:
               schema:
                 type: string
                 example: "Profile de l'administrateur."
@@ -153,7 +153,7 @@ paths:
       description: Update profile description
       requestBody:
         content:
-          application/json:
+          text/plain:
             schema:
               type: string
               example: "Profile de l'administrateur."
