@@ -39,7 +39,78 @@ paths:
           description: The email is already used.
         '403': 
           description: The object was not valid.
-          
+
+  /PS/profiles/{id}:
+    get:
+      summary: Returns a single profile.
+      description: Returns a single profile.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the profile
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: The profile was successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+    delete:
+      summary: Deletes a single profile.
+      description: Deletes a single profile with its id.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the profile
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: The profile was successfully deleted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+  /PS/profiles/{id}/name:
+    get:
+      summary: Returns a single name.
+      description: Returns a single name for a profile.
+      parameters:
+        - name: name
+          in: path
+          description: The id of the profile
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: The name was successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+    put:
+      summary: Edits a single name.
+      description: Edits a single name for a profile.
+      parameters:
+        - name: name
+          in: path
+          description: The id of the profile
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: The name was successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+
 components:
   schemas:
     Profile:

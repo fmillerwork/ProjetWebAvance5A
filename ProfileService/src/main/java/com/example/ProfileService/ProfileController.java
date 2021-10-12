@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class ProfileController {
 
     private final AtomicLong counter = new AtomicLong();
-    private final Map<Long, Profile> profiles = new HashMap<Long, Profile>();
+    private final Map<Long, Profile> profiles = new HashMap<>();
     private final Logger logger = LoggerFactory.getLogger(ProfileController.class);
 
     @GetMapping("/PS/profiles")
