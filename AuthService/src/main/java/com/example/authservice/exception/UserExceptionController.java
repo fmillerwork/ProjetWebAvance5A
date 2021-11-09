@@ -1,31 +1,28 @@
-package com.example.ProfileService.exception;
+package com.example.authservice.exception;
 
-import com.example.authservice.exception.IDInUseException;
-import com.example.authservice.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-public class ProfileExceptionController {
+public class UserExceptionController {
 
-    @ExceptionHandler(IDInUseException.class)
-    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-    String emailInUseHandler(IDInUseException ex){
+    @ResponseBody // not necessary with @RestControllerAdvice
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    String userNotFoundHandler(UserNotFoundException ex){
         return ex.getMessage();
     }
 
-    @ExceptionHandler(com.example.authservice.exception.UserNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    String profileNotFoundHandler(UserNotFoundException ex){
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    @ExceptionHandler(IDInUseException.class)
+    String idInUseExceptionHandler(IDInUseException ex){
         return ex.getMessage();
     }
 

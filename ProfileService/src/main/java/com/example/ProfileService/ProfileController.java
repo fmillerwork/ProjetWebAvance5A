@@ -1,7 +1,7 @@
 package com.example.ProfileService;
 
 import com.example.ProfileService.exception.EmailInUseException;
-import com.example.ProfileService.exception.ProfileNotFoundException;
+import com.example.ProfileService.exception.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 // @PathVariable => dans le chemin vers le endpoint /PS/profiles/{id}/name (id)
 // @RequestBody => dans le corps de la requète /PS/profiles/{id}/name (name) (utile pour envoyer des objets)
-// @RequestParam => dans les paramètres de la requète
+// @RequestParam => dans les paramètres de la requète /PS/profiles/{id}/name="nom" (nom)
 // Post => Ajout
 // Put => Update
 
@@ -37,7 +37,7 @@ public class ProfileController {
     @GetMapping("/PS/profiles/{id}")
     public Profile getProfileById(@PathVariable(value = "id") long id){
         logger.trace("GET /PS/profiles/{id}");
-        if(!profiles.containsKey(id)) throw new ProfileNotFoundException(id);
+        if(!profiles.containsKey(id)) throw new UserNotFoundException(id);
         return profiles.get(id);
     }
 
@@ -84,7 +84,7 @@ public class ProfileController {
     @PutMapping("/PS/profiles/{id}/name")
     public void updateProfileName(@PathVariable(value = "id") long id, @RequestBody String name){
         logger.trace("PUT /PS/profiles/{id}/name");
-        if(!profiles.containsKey(id)) throw new ProfileNotFoundException(id);{
+        if(!profiles.containsKey(id)) throw new UserNotFoundException(id);{
             logger.info(String.format("Profile name updated : [%d] %s => [%d] %s", id, profiles.get(id).getName(), id, name));
             profiles.get(id).setName(name);
         }
@@ -94,7 +94,7 @@ public class ProfileController {
     @PutMapping("/PS/profiles/{id}/description")
     public void updateProfileDescription(@PathVariable(value = "id") long id, @RequestBody String description){
         logger.trace("PUT /PS/profiles/{id}/description");
-        if(!profiles.containsKey(id)) throw new ProfileNotFoundException(id);{
+        if(!profiles.containsKey(id)) throw new UserNotFoundException(id);{
             logger.info(String.format("Profile description updated : [%d] %s => [%d] %s", id, profiles.get(id).getDescription(), id, description));
             profiles.get(id).setName(description);
         }
@@ -104,7 +104,7 @@ public class ProfileController {
     @DeleteMapping("/PS/profiles/{id}")
     public void deleteProfile(@PathVariable(value = "id") long id){
         logger.trace("DELETE /PS/profiles/{id}");
-        if(!profiles.containsKey(id)) throw new ProfileNotFoundException(id);
+        if(!profiles.containsKey(id)) throw new UserNotFoundException(id);
         logger.info(String.format("Profile deleted : [%d] %s", id, profiles.get(id).getEmail()));
         profiles.remove(id);
     }
