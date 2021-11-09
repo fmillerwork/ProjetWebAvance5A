@@ -38,6 +38,18 @@ public class UserExceptionController {
         return errors;
     }
 
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(TokenNotValidException.class)
+    String tokenNotValidExceptionHandler(TokenNotValidException ex){
+        return ex.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(WrongUserException.class)
+    String wrongUserExceptionHandler(WrongUserException ex){
+        return ex.getMessage();
+    }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public String notReadableHttpMessageHandler(HttpMessageNotReadableException ex){
