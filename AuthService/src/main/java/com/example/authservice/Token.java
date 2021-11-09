@@ -6,15 +6,11 @@ import java.util.*;
 public class Token{
     private String value;
     private Instant startTime;
-    private static List<Token> attributedTokens = new ArrayList<>();
-    private TokenDurationCheckingThread TDCT;
+    private Map<Token,Long> tokens;
 
-    public Token() {
+    public Token(Map<Token,Long> tokens) {
         value = generateValue();
-        attributedTokens.add(this);
         startTime = Instant.now();
-        TDCT = new TokenDurationCheckingThread(this, attributedTokens);
-        TDCT.start();
     }
 
     public String getValue() {
@@ -25,12 +21,12 @@ public class Token{
         return startTime;
     }
 
-    public static List<Token> getAttributedTokens() {
-        return attributedTokens;
+    public static boolean isValid(String value){
+        return value.length() != 10;
     }
 
     public void deleteToken(String value){
-        startTime = Instant.MIN; // Simule une début à un temps -INF
+        tokens.remove(this); // Simule une début à un temps -INF
     }
 
     private String generateValue(){
@@ -48,7 +44,7 @@ public class Token{
                     .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                     .toString();
 
-            for (Token attributedToken: attributedTokens) {
+            for (Token attributedToken: tokens.keySet()) {
                 if(attributedToken.value.equals(generatedValue))
                     isAttributed = true;
             }

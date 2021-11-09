@@ -31,4 +31,16 @@ public class User {
 
     public User() {
     }
+
+    //private String generatePassword(){
+    //    int leftLimit = 33; // '!'
+    //    int rightLimit = 126; // '~'
+    //    int targetStringLength = 10;
+    //    Random random = new Random();
+    //
+    //    return random.ints(leftLimit, rightLimit + 1)
+    //            .limit(targetStringLength)
+    //            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+    //            .toString();
+    //}
 }
