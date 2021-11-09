@@ -50,6 +50,12 @@ public class UserExceptionController {
         return ex.getMessage();
     }
 
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(WrongPasswordException.class)
+    String wrongPasswordExceptionHandler(WrongPasswordException ex){
+        return ex.getMessage();
+    }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public String notReadableHttpMessageHandler(HttpMessageNotReadableException ex){
