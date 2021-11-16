@@ -31,34 +31,34 @@ public class UserController {
     }
 
     @GetMapping("/AS/users/{userId}")
-    public User getUserById(@PathVariable(value = "id") long id){
+    public User getUserById(@PathVariable(value = "userId") long id){
         logger.trace("GET /AS/users/{userId}");
         if(!users.containsKey(id)) throw new UserNotFoundException(id);
         return users.get(id);
     }
 
     @DeleteMapping("/AS/users/{userId}")
-    public void deleteUser(@PathVariable(value = "id") long id, @RequestHeader("X-Token") String tokenValue){
+    public void deleteUser(@PathVariable(value = "userId") long id, @RequestHeader("X-Token") String tokenValue){
         logger.trace("DELETE /AS/users/{userId}");
 
         checkToken(id, tokenValue);
 
-        logger.info(String.format("User deleted : [%d]", users.get(id)));
+        logger.info(String.format("User deleted : [%d]", id));
         users.remove(id);
     }
 
     @PutMapping("/AS/users/{userId}/password")
-    public void updateUserPassword(@PathVariable(value = "id") long id, @RequestHeader("X-Token") String tokenValue, @RequestBody String password){
+    public void updateUserPassword(@PathVariable(value = "userId") long id, @RequestHeader("X-Token") String tokenValue, @RequestBody String password){
         logger.trace("PUT /AS/users/{userId}/password");
 
         checkToken(id, tokenValue);
 
-        logger.info(String.format("Password updated for user : [%d]", users.get(id)));
+        logger.info(String.format("Password updated for user : [%d]", id));
         users.get(id).setPassword(password);
     }
 
     @PutMapping("/AS/users/{userId}/token")
-    public String userConnection(@PathVariable(value = "id") long id, @RequestBody String password){
+    public String userConnection(@PathVariable(value = "userId") long id, @RequestBody String password){
         logger.trace("PUT /AS/users/{userId}/token");
         if(!users.containsKey(id)) throw new UserNotFoundException(id);
         for (User u : users.values()) {
@@ -79,7 +79,7 @@ public class UserController {
     }
 
     @DeleteMapping("/AS/users/{userId}/token")
-    public void userDisconnection(@PathVariable(value = "id") long id, @RequestHeader("X-Token") String tokenValue){
+    public void userDisconnection(@PathVariable(value = "userId") long id, @RequestHeader("X-Token") String tokenValue){
         logger.trace("DELETE /AS/users/{userId}/token");
 
         checkToken(id, tokenValue);
