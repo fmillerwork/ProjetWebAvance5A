@@ -1,4 +1,4 @@
-package com.example.authservice;
+package com.example.authservice.model;
 
 import java.time.Instant;
 import java.util.*;

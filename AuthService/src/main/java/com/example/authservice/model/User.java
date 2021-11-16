@@ -1,4 +1,4 @@
-package com.example.authservice;
+package com.example.authservice.model;
 
 import javax.validation.constraints.NotNull;
 

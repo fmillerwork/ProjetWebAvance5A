@@ -1,6 +1,9 @@
 package com.example.authservice;
 
 import com.example.authservice.exception.*;
+import com.example.authservice.model.Token;
+import com.example.authservice.model.TokenDurationCheckingThread;
+import com.example.authservice.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +14,7 @@ import java.util.Map;
 
 @RestController
 public class UserController {
-    private final Map<Long,User> users = new HashMap<>();
+    private final Map<Long, User> users = new HashMap<>();
     private final Map<Token,Long> tokens = new HashMap<>();
     private Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -26,7 +29,7 @@ public class UserController {
         Token token = new Token();
         tokens.put(token,user.getId());
         new TokenDurationCheckingThread(token, tokens).start();
-        logger.info(String.format("User created : [;%d] => [%s]", user.getId(), user.getPassword()));
+        logger.info(String.format("User created : [%d] => [%s]", user.getId(), user.getPassword()));
         return user.getId();
     }
 
@@ -71,7 +74,7 @@ public class UserController {
                 tokens.put(token,u.getId());
                 new TokenDurationCheckingThread(token, tokens).start();
 
-                logger.info(String.format("User connected : [;%d] => [%s]", id, token.getValue()));
+                logger.info(String.format("User connected : [%d] => [%s]", id, token.getValue()));
                 return token.getValue();
             }
         }
@@ -84,12 +87,12 @@ public class UserController {
 
         checkToken(id, tokenValue);
 
-        logger.info(String.format("Tokens deleted for user : [%d]", id));
-        for(Token token: tokens.keySet()){
+        for(Token token: tokens.keySet()){ // BUG
             if(tokens.get(token) == id){
                 tokens.remove(token);
             }
         }
+        logger.info(String.format("Tokens deleted for user : [%d]", id));
     }
 
     @GetMapping("/token")

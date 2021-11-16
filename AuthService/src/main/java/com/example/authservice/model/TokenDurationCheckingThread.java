@@ -1,8 +1,7 @@
-package com.example.authservice;
+package com.example.authservice.model;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
 import java.util.Map;
 
 public class TokenDurationCheckingThread extends Thread{
