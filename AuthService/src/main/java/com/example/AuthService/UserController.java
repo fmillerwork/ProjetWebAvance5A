@@ -1,11 +1,12 @@
 package com.example.AuthService;
 
-import com.example.AuthService.Token;
-import com.example.AuthService.User;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
@@ -28,7 +29,7 @@ public class UserController {
     public User put_user(@RequestBody @Valid User user) {
         long new_id = counter.incrementAndGet();
         user.setId(new_id);
-        user.setTokens(new ArrayList<String>());
+        user.setTokens(new ArrayList<>());
         users.put(new_id,user);
         return user;
     }
@@ -46,8 +47,8 @@ public class UserController {
 
     /**
      * Cela rend tous les token associés à cet user invalides.
-     * @param userId
-     * @param X_Token
+     * @param userId the user id to remove
+     * @param X_Token the token
      */
     @DeleteMapping("/AS/users/{userId}")
     public void user_delete(@PathVariable(value = "userId")long userId,@RequestHeader String X_Token) {
@@ -79,6 +80,7 @@ public class UserController {
         if(u.getPassword().equals(password)){
             Token token = new Token(9);
             u.getTokens().add(token.getValue());
+            new TokenDurationCheckThread(token, u).start();
             return token.getValue();
         }
         return null;
@@ -101,8 +103,8 @@ public class UserController {
      *         un post vers /token, s'il n'a pas été créé il y a plus
      *         de 5 minutes, s'il n'a pas été supprimé et si
      *         l'user de ce token existe toujours.
-     * @param X_Token
-     * @return
+     * @param X_Token the token
+     * @return the user id where the token is present
      */
     @GetMapping("/token")
     public long get_token(@RequestHeader String X_Token) {
