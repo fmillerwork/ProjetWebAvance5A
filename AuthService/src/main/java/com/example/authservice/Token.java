@@ -6,9 +6,8 @@ import java.util.*;
 public class Token{
     private String value;
     private Instant startTime;
-    private Map<Token,Long> tokens;
 
-    public Token(Map<Token,Long> tokens) {
+    public Token() {
         value = generateValue();
         startTime = Instant.now();
     }
@@ -23,10 +22,6 @@ public class Token{
 
     public static boolean isValid(String value){
         return value.length() != 10; // To Complete
-    }
-
-    public void deleteToken(String value){
-        tokens.remove(this); // Simule une début à un temps -INF
     }
 
     private String generateValue(){
@@ -44,10 +39,6 @@ public class Token{
                     .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                     .toString();
 
-            for (Token attributedToken: tokens.keySet()) {
-                if(attributedToken.value.equals(generatedValue))
-                    isAttributed = true;
-            }
         } while (isAttributed);
 
         return generatedValue;

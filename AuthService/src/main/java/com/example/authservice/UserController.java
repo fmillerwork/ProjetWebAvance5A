@@ -23,7 +23,7 @@ public class UserController {
                 throw new IDInUseException(user.getId());
         }
         users.put(user.getId(), user);
-        Token token = new Token(tokens);
+        Token token = new Token();
         tokens.put(token,user.getId());
         new TokenDurationCheckingThread(token, tokens).start();
         logger.info(String.format("User created : [;%d] => [%s]", user.getId(), user.getPassword()));
@@ -41,7 +41,7 @@ public class UserController {
     public void deleteUser(@PathVariable(value = "id") long id, @RequestHeader("X-Token") String tokenValue){
         logger.trace("DELETE /AS/users/{userId}");
 
-        CheckToken(id, tokenValue);
+        checkToken(id, tokenValue);
 
         logger.info(String.format("User deleted : [%d]", users.get(id)));
         users.remove(id);
@@ -51,7 +51,7 @@ public class UserController {
     public void updateUserPassword(@PathVariable(value = "id") long id, @RequestHeader("X-Token") String tokenValue, @RequestBody String password){
         logger.trace("PUT /AS/users/{userId}/password");
 
-        CheckToken(id, tokenValue);
+        checkToken(id, tokenValue);
 
         logger.info(String.format("Password updated for user : [%d]", users.get(id)));
         users.get(id).setPassword(password);
@@ -63,7 +63,11 @@ public class UserController {
         if(!users.containsKey(id)) throw new UserNotFoundException(id);
         for (User u : users.values()) {
             if(u.getId() == id && u.getPassword().equals(password)){
-                Token token = new Token(tokens);
+                Token token;
+                do{
+                    token = new Token();
+                }while(tokenIsAssigned(token));
+
                 tokens.put(token,u.getId());
                 new TokenDurationCheckingThread(token, tokens).start();
 
@@ -78,7 +82,7 @@ public class UserController {
     public void userDisconnection(@PathVariable(value = "id") long id, @RequestHeader("X-Token") String tokenValue){
         logger.trace("DELETE /AS/users/{userId}/token");
 
-        CheckToken(id, tokenValue);
+        checkToken(id, tokenValue);
 
         logger.info(String.format("Tokens deleted for user : [%d]", id));
         for(Token token: tokens.keySet()){
@@ -92,7 +96,6 @@ public class UserController {
     public long checkTokenExistence(@RequestHeader("X-Token") String tokenValue){
         logger.trace("GET /token");
 
-        //logger.info(String.format("User deleted : [%d]", users.get(id)));
         for(Token token: tokens.keySet()){
             if(token.getValue().equals(tokenValue)){
                 return tokens.get(token);
@@ -101,7 +104,7 @@ public class UserController {
         throw new TokenNotValidException(tokenValue);
     }
 
-    private void CheckToken(@PathVariable("id") long id, @RequestHeader("X-Token") String tokenValue) {
+    private void checkToken(@PathVariable("id") long id, @RequestHeader("X-Token") String tokenValue) {
         if (Token.isValid(tokenValue)) throw new TokenNotValidException(tokenValue);
 
         boolean doesTokenExists = false;
@@ -113,5 +116,13 @@ public class UserController {
             }
         }
         if (!doesTokenExists) throw new UserNotFoundException(id);
+    }
+
+    private boolean tokenIsAssigned(Token token){
+        for (Token attributedToken: tokens.keySet()) {
+            if(attributedToken.getValue().equals(token.getValue()))
+                return true;
+        }
+        return false;
     }
 }
