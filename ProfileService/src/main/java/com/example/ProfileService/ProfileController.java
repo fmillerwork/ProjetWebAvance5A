@@ -119,7 +119,7 @@ public class ProfileController {
         ResponseEntity<Long>respons = restTemplate.exchange(auth_service_url + "/AS/token", HttpMethod.GET, entity, Long.class);
         Long token_user = respons.getBody();
         if(token_user != id)
-            throw new RuntimeException();
+            throw new RuntimeException(); // CHANGER EXCEPTION
 
         if(!profiles.containsKey(id)) throw new ProfileNotFoundException(id);
         logger.info(String.format("Profile deleted : [%d] %s", id, profiles.get(id).getEmail()));

@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -48,6 +50,10 @@ public class UserController {
 
         logger.info(String.format("User deleted : [%d]", id));
         users.remove(id);
+        for (Token t: tokens.keySet()) {
+            if(t.getValue().equals(tokenValue))
+                tokens.remove(t);
+        }
     }
 
     @PutMapping("/AS/users/{userId}/password")
@@ -87,10 +93,14 @@ public class UserController {
 
         checkToken(id, tokenValue);
 
-        for(Token token: tokens.keySet()){ // BUG
+        List<Token> tokenToRemove = new ArrayList<>();
+        for(Token token: tokens.keySet()){
             if(tokens.get(token) == id){
-                tokens.remove(token);
+                tokenToRemove.add(token);
             }
+        }
+        for (Token token: tokenToRemove) {
+            tokens.remove(token);
         }
         logger.info(String.format("Tokens deleted for user : [%d]", id));
     }
