@@ -1,7 +1,5 @@
 package com.example.ProfileService.exception;
 
-import com.example.authservice.exception.IDInUseException;
-import com.example.authservice.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
@@ -23,9 +21,9 @@ public class ProfileExceptionController {
         return ex.getMessage();
     }
 
-    @ExceptionHandler(com.example.authservice.exception.UserNotFoundException.class)
+    @ExceptionHandler(ProfileNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String profileNotFoundHandler(UserNotFoundException ex){
+    String profileNotFoundHandler(ProfileNotFoundException ex){
         return ex.getMessage();
     }
 
