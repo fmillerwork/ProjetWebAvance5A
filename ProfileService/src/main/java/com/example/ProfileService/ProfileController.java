@@ -4,7 +4,10 @@ import com.example.ProfileService.exception.EmailInUseException;
 import com.example.ProfileService.exception.ProfileNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -22,7 +25,10 @@ import java.util.concurrent.atomic.AtomicLong;
 public class ProfileController {
 
     private final AtomicLong counter = new AtomicLong();
-    private final Map<Long,Profile> profiles = new HashMap<Long,Profile>();
+    private final Map<Long,Profile> profiles = new HashMap<>();
+
+    @Value("${service.authentification}")
+    private String auth_service_url;
 
     private Logger logger = LoggerFactory.getLogger(ProfileController.class);
 
@@ -102,8 +108,19 @@ public class ProfileController {
 
     //Documentée
     @DeleteMapping("/PS/profiles/{id}")
-    public void deleteProfile(@PathVariable(value = "id") long id){
+    @CrossOrigin
+    public void deleteProfile(@PathVariable(value = "id") long id, @RequestHeader(value="X-Token") String token){
         logger.trace("DELETE /PS/profiles/{id}");
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders header = new HttpHeaders();
+        header.add("X-Token", token);
+        HttpEntity entity = new HttpEntity<>("", header);
+        ResponseEntity<Long>respons = restTemplate.exchange(auth_service_url + "/AS/token", HttpMethod.GET, entity, Long.class);
+        Long token_user = respons.getBody();
+        if(token_user != id)
+            throw new RuntimeException();
+
         if(!profiles.containsKey(id)) throw new ProfileNotFoundException(id);
         logger.info(String.format("Profile deleted : [%d] %s", id, profiles.get(id).getEmail()));
         profiles.remove(id);

@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class ProfileServiceApplicationTests {
+class ProfileControllerTests {
 
 	@Autowired
 	private MockMvc mockMvc;
