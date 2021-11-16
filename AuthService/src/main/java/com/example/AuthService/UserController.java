@@ -80,7 +80,7 @@ public class UserController {
         if(u.getPassword().equals(password)){
             Token token = new Token(9);
             u.getTokens().add(token.getValue());
-            new TokenDurationCheckThread(token, u).start();
+            new TokenDurationCheckThread(token, u).start(); //start the thread when the token is created
             return token.getValue();
         }
         return null;

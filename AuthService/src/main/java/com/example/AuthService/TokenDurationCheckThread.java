@@ -2,8 +2,10 @@ package com.example.AuthService;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 
+/**
+ * Class to check if a token is active more than 5 minutes or not
+ */
 public class TokenDurationCheckThread extends Thread{
 
     private Token token;
@@ -17,8 +19,7 @@ public class TokenDurationCheckThread extends Thread{
 
     public void run(){
         while(Duration.between(token.getStartTime(),Instant.now()).compareTo(Duration.ofSeconds(5*60)) < 0){
-            System.out.println(Duration.between(Instant.now(),token.getStartTime()));
-            System.out.println(Duration.ofSeconds(30));
+            //wait 5 minutes before deleting
         }
         u.getTokens().remove(token.getValue());
     }
