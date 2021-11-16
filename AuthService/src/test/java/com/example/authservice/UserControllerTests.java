@@ -10,8 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -29,7 +28,7 @@ class UserControllerTests {
         ObjectMapper objectMapper = new ObjectMapper();
         String profile_json = objectMapper.writeValueAsString(profile);
 
-        this.mockMvc.perform(post("/AS/users")
+        this.mockMvc.perform(put("/AS/users")
                         .content(profile_json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
