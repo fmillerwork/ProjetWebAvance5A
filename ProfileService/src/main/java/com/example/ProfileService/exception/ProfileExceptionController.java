@@ -15,9 +15,9 @@ import java.util.Map;
 @RestControllerAdvice
 public class ProfileExceptionController {
 
-    @ExceptionHandler(IDInUseException.class)
-    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-    String emailInUseHandler(IDInUseException ex){
+    @ExceptionHandler(EmailInUseException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    String emailInUseHandler(EmailInUseException ex){
         return ex.getMessage();
     }
 

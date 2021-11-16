@@ -59,16 +59,20 @@ class ProfileControllerTests {
 
 	@Test
 	public void saveProfile_shouldFailedAddTwoIdenticalEmail() throws Exception{
-		Profile profile = new Profile(1,"Florian","florian.miller@gmail.com","");
-		ObjectMapper objectMapper = new ObjectMapper();
-		String profile_json = objectMapper.writeValueAsString(profile);
+		Profile profile1 = new Profile(1,"Florian","florian.miller@gmail.com","");
+		ObjectMapper objectMapper1 = new ObjectMapper();
+		String profile_json1 = objectMapper1.writeValueAsString(profile1);
+
+		Profile profile2 = new Profile(1,"Florian","florian.miller@gmail.com","");
+		ObjectMapper objectMapper2 = new ObjectMapper();
+		String profile_json2 = objectMapper2.writeValueAsString(profile2);
 
 		this.mockMvc.perform(post("/PS/profiles")
-				.content(profile_json)
+				.content(profile_json1)
 				.contentType(MediaType.APPLICATION_JSON)
 		);
 		this.mockMvc.perform(post("/PS/profiles")
-						.content(profile_json)
+						.content(profile_json2)
 						.contentType(MediaType.APPLICATION_JSON)
 				)
 				.andDo(print())
