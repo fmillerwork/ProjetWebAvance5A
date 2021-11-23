@@ -66,9 +66,9 @@ public class UserController {
         users.get(id).setPassword(password);
     }
 
-    @PutMapping("/AS/users/{userId}/token")
+    @PostMapping("/AS/users/{userId}/token")
     public String userConnection(@PathVariable(value = "userId") long id, @RequestBody String password){
-        logger.trace("PUT /AS/users/{userId}/token");
+        logger.trace("POST /AS/users/{userId}/token");
         if(!users.containsKey(id)) throw new NotFoundUserException(id);
         for (User u : users.values()) {
             if(u.getId() == id && u.getPassword().equals(password)){

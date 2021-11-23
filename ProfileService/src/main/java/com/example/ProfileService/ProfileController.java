@@ -1,6 +1,7 @@
 package com.example.ProfileService;
 
 import com.example.ProfileService.exception.EmailInUseException;
+import com.example.ProfileService.exception.EmailNotFoundException;
 import com.example.ProfileService.exception.InvalidTokenException;
 import com.example.ProfileService.exception.ProfileNotFoundException;
 import com.example.ProfileService.model.AuthServiceUser;
@@ -152,14 +153,14 @@ public class ProfileController {
             @RequestHeader(value = "X-Token") String token,
             @RequestBody String email) {
         logger.trace(String.format("PUT /PS/profiles/%d/email", id));
-        logger.trace(String.format("\tnew email: %s.", email));
         if (!profiles.containsKey(id))
             throw new ProfileNotFoundException(id);
         checkTokenAgainstUser(token, id);
         Profile profile = profiles.get(id);
         CheckForEmailUse(profile.getEmail());
+        logger.trace(String.format("Old email: %s.", profile.getEmail()));
         profiles.get(id).setEmail(email);
-        logger.trace(String.format("\told email: %s.", profile.getEmail()));
+        logger.trace(String.format("Email changed email: %s.", profile.getEmail()));
         profile.setEmail(email);
         return profile;
     }
@@ -170,19 +171,33 @@ public class ProfileController {
             @RequestParam(value = "email") String email,
             @RequestBody String password)
     {
-        CheckForEmailUse(email);
-
+        logger.trace(String.format("POST /PS/login?email=%s", email));
+        boolean emailExists = false;
         for (Profile p : profiles.values()) {
-            if (p.getEmail().equals(email)) {
-                return restTemplate.postForObject(
-                        String.format(
-                                "%s/AS/users/%d/token",
-                                auth_service_url, p.getId()),
-                        password, String.class);
+            if (p.getEmail().equals(email)){
+                emailExists = true;
+                break;
             }
         }
-        throw new RuntimeException(); // TODO
+        if (!emailExists)
+            throw new EmailNotFoundException(email);
+        try{
+            for (Profile p : profiles.values()) {
+                if (p.getEmail().equals(email)) {
+                    String token = restTemplate.postForObject(
+                            String.format(
+                                    "%s/AS/users/%d/token",
+                                    auth_service_url, p.getId()),
+                            password, String.class);
 
+                    logger.trace(String.format("Profile connecté avec le token : %s.", token));
+                    return token;
+                }
+            }
+        }catch(Exception e){
+            throw e;
+        }
+        throw new RuntimeException(); // Jamais atteint
     }
 
     private void CheckForEmailUse(@RequestParam("email") String email) {

@@ -5,6 +5,7 @@
       <list>
         <option value="$PROJECT_DIR$/ProfileService/pom.xml" />
         <option value="$PROJECT_DIR$/AuthService/pom.xml" />
+        <option value="$PROJECT_DIR$/Gateway/pom.xml" />
       </list>
     </option>
   </component>
