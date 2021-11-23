@@ -14,9 +14,9 @@ import java.util.Map;
 public class UserExceptionController {
 
     @ResponseBody // not necessary with @RestControllerAdvice
-    @ExceptionHandler(UserNotFoundException.class)
+    @ExceptionHandler(NotFoundUserException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String userNotFoundHandler(UserNotFoundException ex){
+    String userNotFoundHandler(NotFoundUserException ex){
         return ex.getMessage();
     }
 
@@ -39,8 +39,8 @@ public class UserExceptionController {
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(TokenNotValidException.class)
-    String tokenNotValidExceptionHandler(TokenNotValidException ex){
+    @ExceptionHandler(InvalidTokenException.class)
+    String tokenNotValidExceptionHandler(InvalidTokenException ex){
         return ex.getMessage();
     }
 
