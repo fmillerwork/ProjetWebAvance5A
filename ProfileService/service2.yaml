@@ -9,7 +9,7 @@ info:
     Un token est juste une string aléatoire. Les tokens sont transférés
     dans l'en-tête "X-Token". Une requête get vers /token vérifie si un
     token est valide. Un utilisateur peut avoir plusieurs tokens valides !
-  
+
   contact:
     email: hans-jorg.schurr@univ-lorraine.fr
   version: 1.0.0
@@ -98,8 +98,8 @@ paths:
           description: Le token est pour un autre user.
         404:
           description: User non trouvé
-    
-  /AS/users/{userId}/password:         
+
+  /AS/users/{userId}/password:
     put:
       tags:
       - user
@@ -118,7 +118,7 @@ paths:
         schema:
           type: integer
           format: int64
-          
+
       - name: X-Token
         in: header
         description: Un token valide pour cet user (voir get sur /token)
@@ -133,8 +133,8 @@ paths:
           description: Le token est pour un autre user.
         404:
           description: User non trouvé
-  
-  /AS/users/{userId}/token:         
+
+  /AS/users/{userId}/token:
     put:
       tags:
       - token
@@ -165,7 +165,7 @@ paths:
               schema:
                 type: string
                 example: "ABC2123"
-            
+
         401:
           description: Le mot de passe n'est pas correct.
         404:

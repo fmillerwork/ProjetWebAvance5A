@@ -1,8 +1,10 @@
 package com.example.AuthService;
 
+import com.example.AuthService.exception.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,6 +16,7 @@ public class UserController {
 
     private final AtomicLong counter = new AtomicLong();
     private final Map<Long, User> users = new HashMap<>();
+    private final Map<String, Token> tokens = new HashMap<String, Token>();
 
     @GetMapping("/AS/users")
     public Collection<User> users(){
@@ -27,6 +30,7 @@ public class UserController {
      */
     @PutMapping("/AS/users")
     public User put_user(@RequestBody @Valid User user) {
+        if(users.containsKey(user.getId())) throw new UserAlreadyExistsException(user.getId());
         long new_id = counter.incrementAndGet();
         user.setId(new_id);
         user.setTokens(new ArrayList<>());
@@ -41,7 +45,7 @@ public class UserController {
      */
     @GetMapping("/AS/users/{userId}")
     public long get_user_id(@PathVariable long userId){
-        //if(!users.containsKey(userId)) throw new Exception();
+        if(!users.containsKey(userId)) throw new UserNotFoundException(userId);
         return users.get(userId).getId();
     }
 
@@ -52,6 +56,15 @@ public class UserController {
      */
     @DeleteMapping("/AS/users/{userId}")
     public void user_delete(@PathVariable(value = "userId")long userId,@RequestHeader(value="X-Token") String X_Token) {
+        if (!tokens.containsKey(X_Token))
+            throw new TokenNotValidException(X_Token);
+        Token t = tokens.get(X_Token);
+        if (t.getStartTime().plusSeconds(5*60).compareTo(Instant.now())<0) {
+            tokens.remove(t);
+            throw new TokenNotValidException(X_Token);
+        }
+        if (!users.containsKey(userId))
+            throw new UserNotFoundException(userId);
         User u = users.get(userId);
         if(u.getTokens().contains(X_Token)) users.remove(userId);
     }
