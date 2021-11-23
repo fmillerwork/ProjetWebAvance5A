@@ -1,13 +1,11 @@
 package com.example.ProfileService;
 
-import com.example.ProfileService.exception.EmailInUseException;
-import com.example.ProfileService.exception.EmailNotFoundException;
-import com.example.ProfileService.exception.InvalidTokenException;
-import com.example.ProfileService.exception.ProfileNotFoundException;
+import com.example.ProfileService.exception.*;
 import com.example.ProfileService.model.AuthServiceUser;
 import com.example.ProfileService.model.Profile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.PropertyAccessException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
@@ -180,7 +178,7 @@ public class ProfileController {
             }
         }
         if (!emailExists)
-            throw new EmailNotFoundException(email);
+            throw new ProfileNotFoundException(email);
         try{
             for (Profile p : profiles.values()) {
                 if (p.getEmail().equals(email)) {
@@ -194,8 +192,8 @@ public class ProfileController {
                     return token;
                 }
             }
-        }catch(Exception e){
-            throw e;
+        }catch(HttpClientErrorException.Unauthorized e){
+            throw new WrongPasswordException(email);
         }
         throw new RuntimeException(); // Jamais atteint
     }

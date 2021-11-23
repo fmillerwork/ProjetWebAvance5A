@@ -5,7 +5,7 @@ public class ProfileNotFoundException extends RuntimeException{
         super("Profile not found : " + id);
     }
 
-    public ProfileNotFoundException(int id){
-        super("Profile not found : " + id);
+    public ProfileNotFoundException(String email){
+        super("Profile not found : " + email);
     }
 }
