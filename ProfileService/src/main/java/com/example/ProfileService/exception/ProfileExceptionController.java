@@ -21,6 +21,24 @@ public class ProfileExceptionController {
         return ex.getMessage();
     }
 
+    @ExceptionHandler(NotFoundUserException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    String userNotFoundHandler(NotFoundUserException ex){
+        return ex.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(WrongPasswordException.class)
+    String wrongPasswordExceptionHandler(WrongPasswordException ex){
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler(EmailNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    String emailNotFoundHandler(EmailNotFoundException ex){
+        return ex.getMessage();
+    }
+
     @ExceptionHandler(ProfileNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     String profileNotFoundHandler(ProfileNotFoundException ex){
