@@ -25,7 +25,7 @@ public class UserController {
         logger.trace("PUT /AS/users");
         for (User u : users.values()) {
             if(u.getId() == user.getId())
-                throw new IDInUseException(user.getId());
+                throw new com.example.authservice.exception.IDInUseException(user.getId());
         }
         users.put(user.getId(), user);
         Token token = new Token();
@@ -38,7 +38,7 @@ public class UserController {
     @GetMapping("/AS/users/{userId}")
     public User getUserById(@PathVariable(value = "userId") long id){
         logger.trace("GET /AS/users/{userId}");
-        if(!users.containsKey(id)) throw new UserNotFoundException(id);
+        if(!users.containsKey(id)) throw new NotFoundUserException(id);
         return users.get(id);
     }
 
@@ -69,7 +69,7 @@ public class UserController {
     @PutMapping("/AS/users/{userId}/token")
     public String userConnection(@PathVariable(value = "userId") long id, @RequestBody String password){
         logger.trace("PUT /AS/users/{userId}/token");
-        if(!users.containsKey(id)) throw new UserNotFoundException(id);
+        if(!users.containsKey(id)) throw new NotFoundUserException(id);
         for (User u : users.values()) {
             if(u.getId() == id && u.getPassword().equals(password)){
                 Token token;
@@ -114,11 +114,11 @@ public class UserController {
                 return tokens.get(token);
             }
         }
-        throw new TokenNotValidException(tokenValue);
+        throw new InvalidTokenException(tokenValue);
     }
 
     private void checkToken(@PathVariable("id") long id, @RequestHeader("X-Token") String tokenValue) {
-        if (Token.isValid(tokenValue)) throw new TokenNotValidException(tokenValue);
+        if (Token.isValid(tokenValue)) throw new InvalidTokenException(tokenValue);
 
         boolean doesTokenExists = false;
         for (Token token : tokens.keySet()) {
@@ -128,7 +128,7 @@ public class UserController {
                 break;
             }
         }
-        if (!doesTokenExists) throw new UserNotFoundException(id);
+        if (!doesTokenExists) throw new NotFoundUserException(id);
     }
 
     private boolean tokenIsAssigned(Token token){
