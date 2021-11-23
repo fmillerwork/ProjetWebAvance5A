@@ -4,9 +4,9 @@ public class AuthServiceUser {
     private Long id;
     private String password;
 
-    public AuthServiceUser(Long id, String password) {
+    public AuthServiceUser(Long id) {
         this.id = id;
-        this.password = password;
+        this.password = "zertyuio";
     }
 
     public String getPassword() {

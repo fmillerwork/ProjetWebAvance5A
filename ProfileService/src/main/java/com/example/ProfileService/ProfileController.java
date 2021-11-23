@@ -5,6 +5,7 @@ import com.example.ProfileService.exception.ProfileNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -21,6 +22,14 @@ import java.util.concurrent.atomic.AtomicLong;
 @RestController
 public class ProfileController {
 
+    private final RestTemplate restTemplate;
+
+    public ProfileController(
+            RestTemplateBuilder restTemplateBuilder) {
+        restTemplate = restTemplateBuilder.build();
+    }
+
+
     private final AtomicLong counter = new AtomicLong();
     private final Map<Long, Profile> profiles = new HashMap<>();
     private final ArrayList<String> emails = new ArrayList();
@@ -36,7 +45,7 @@ public class ProfileController {
     }
 
     @PutMapping("/PS/profiles")
-    public Profile profiles_put(@RequestBody @Valid Profile profile, @RequestHeader(value = "password") String password) {
+    public Profile profiles_put(@RequestBody @Valid Profile profile) {
         long new_id = counter.incrementAndGet();
 
         for(Profile p: profiles.values()) {
@@ -46,8 +55,8 @@ public class ProfileController {
         }
         profile.setId(new_id);
 
-        AuthServiceUser auth_service_user = new AuthServiceUser(new_id,password);
-        RestTemplate restTemplate = new RestTemplate();
+        AuthServiceUser auth_service_user = new AuthServiceUser(new_id);
+        //RestTemplate restTemplate = new RestTemplate();
         restTemplate.put(auth_service_url + "/AS/users",auth_service_user);
 
 
@@ -58,7 +67,7 @@ public class ProfileController {
 
     @DeleteMapping("/PS/profiles/{id}")
     public void profile_delete(@PathVariable(value = "id") long id, @RequestHeader(value="X-Token") String token) {
-        RestTemplate restTemplate = new RestTemplate();
+        //RestTemplate restTemplate = new RestTemplate();
         HttpHeaders header = new HttpHeaders();
         header.add("X-Token", token);
         HttpEntity<String> entity = new HttpEntity<>("", header);
@@ -103,7 +112,7 @@ public class ProfileController {
     }
 
     private void check_token_against_user(String token, Long user_id){
-        RestTemplate restTemplate = new RestTemplate();
+        //RestTemplate restTemplate = new RestTemplate();
         HttpHeaders header = new HttpHeaders();
         header.add("X-Token",token);
         HttpEntity<String> entity = new HttpEntity<>("",header);

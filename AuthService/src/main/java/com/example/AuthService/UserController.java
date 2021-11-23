@@ -98,7 +98,6 @@ public class UserController {
     }
 
     /**
-     * TODO : gérer le timeout
      * Un token est valide s'il a été créé avec succès par
      *         un post vers /token, s'il n'a pas été créé il y a plus
      *         de 5 minutes, s'il n'a pas été supprimé et si
