@@ -51,7 +51,7 @@ public class UserController {
      * @param X_Token the token
      */
     @DeleteMapping("/AS/users/{userId}")
-    public void user_delete(@PathVariable(value = "userId")long userId,@RequestHeader String X_Token) {
+    public void user_delete(@PathVariable(value = "userId")long userId,@RequestHeader(value="X-Token") String X_Token) {
         User u = users.get(userId);
         if(u.getTokens().contains(X_Token)) users.remove(userId);
     }
@@ -107,7 +107,7 @@ public class UserController {
      * @return the user id where the token is present
      */
     @GetMapping("/token")
-    public long get_token(@RequestHeader String X_Token) {
+    public long get_token(@RequestHeader(value="X-Token") String X_Token) {
         for (User u : users.values()) {
             if(u.getTokens().contains(X_Token)) return u.getId();
         }
