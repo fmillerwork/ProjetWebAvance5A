@@ -36,6 +36,18 @@ public class GatewayApplication {
                         .path("/profiles/{id}/{endpoint}")
                         .filters(f -> f.prefixPath("/PS"))
                         .uri(profile_service_url))
+                .route(p -> p
+                        .path("/profiles/{id}")
+                        .filters(f -> f.prefixPath("/PS"))
+                        .uri(profile_service_url))
+                .route(p -> p
+                        .path("/login")
+                        .filters(f -> f.prefixPath("/PS"))
+                        .uri(profile_service_url))
+                .route(p -> p
+                        .path("/users/{id}/password")
+                        .filters(f -> f.prefixPath("/AS"))
+                        .uri(auth_service_url))
                 .build();
     }
 
