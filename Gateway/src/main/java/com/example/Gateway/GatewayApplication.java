@@ -20,15 +20,24 @@ public class GatewayApplication {
                 .route(p -> p
                         .path("/profiles").and().method(HttpMethod.GET)
                         .filters(f -> f.prefixPath("/PS"))
-                        .uri("http://localhost:8080"))
-                .route(p -> p
-                        .path("/profile/{id}/{endpoint}")
-                        .filters(f -> f.prefixPath("/PS"))
-                        .uri("http://localhost:8080"))
-                .route(p -> p
-                        .path("/profile/{id}/token")
-                        .filters(f -> f.rewritePath("/profile", "/AS/user"))
                         .uri("http://localhost:8081"))
+                .route(p -> p
+                        .path("/profiles/{id}/token")
+                        .filters(f -> f.rewritePath("/profiles", "/AS/users"))
+                        .uri("http://localhost:8080"))
+                .route(p -> p
+                        .path("/profiles/{id}/password")
+                        .filters(f -> f.rewritePath("/profiles", "/AS/users"))
+                        .uri("http://localhost:8080"))
+                .route(p -> p
+                        .path("/profiles/{id}/{endpoint}")
+                        .filters(f -> f.prefixPath("/PS"))
+                        .uri("http://localhost:8081"))
+                .route(p -> p
+                        .path("/login")
+                        .filters(f -> f.prefixPath("/PS"))
+                        .uri("http://localhost:8081"))
+
                 .build();
     }
 }
