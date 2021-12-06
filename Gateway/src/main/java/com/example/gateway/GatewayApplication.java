@@ -45,7 +45,7 @@ public class GatewayApplication {
                         .filters(f -> f.prefixPath("/PS"))
                         .uri(profile_service_url))
                 .route(p -> p
-                        .path("/users/{id}/password")
+                        .path("/users/{id}/password") // TODO Changer par "f.rewritePath("/profiles","/AS/users""))""
                         .filters(f -> f.prefixPath("/AS"))
                         .uri(auth_service_url))
                 .build();
