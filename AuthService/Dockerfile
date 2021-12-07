@@ -4,6 +4,5 @@ RUN adduser --system --ingroup spring spring
 USER spring:spring
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar
-ENV SERVER_PORT=8081
-ENV AUTH_URL=http://localhost:8080
-ENTRYPOINT ["java","-jar","/app.jar", "--server.port=${SERVER_PORT}", "--service.authentication=${AUTH_URL}"]
+ENV SERVER_PORT=8080
+ENTRYPOINT ["java","-jar","/app.jar", "--server.port=${SERVER_PORT}"]
