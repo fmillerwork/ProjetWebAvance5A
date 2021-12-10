@@ -39,7 +39,7 @@ public class ProfileController {
 
     private Logger logger = LoggerFactory.getLogger(ProfileController.class);
 
-    //Documentée
+    //renvoie l'ensemble des profils
     @GetMapping("/PS/profiles")
     @CrossOrigin
     public Collection<Profile> getProfiles(){
@@ -47,7 +47,7 @@ public class ProfileController {
         return profiles.values();
     }
 
-    //Documentée
+    //renvoie le profil d'id id 
     @GetMapping("/PS/profiles/{id}")
     @CrossOrigin
     public Profile getProfileById(@PathVariable(value = "id") long id){
@@ -56,17 +56,9 @@ public class ProfileController {
         return profiles.get(id);
     }
 
-//    @GetMapping("/PS/profiles/{email}")
-//    public Profile getProfileByEmail(@PathVariable(value = "email") String email){
-//        logger.trace("GET /PS/profiles/{email}");
-//        for (Profile p: profiles.values()) {
-//           if(p.getEmail().equals(email))
-//               return p;
-//        }
-//        throw new ProfileNotFoundException(email);
-//    }
 
-    //Documentée
+
+    //renvoie le nom d'un profil à partir de son id
     @GetMapping("/PS/profiles/{id}/name")
     @CrossOrigin
     public String getProfileNameById(@PathVariable(value = "id") long id){
@@ -74,7 +66,7 @@ public class ProfileController {
         return profiles.get(id).getName();
     }
 
-    //Documentée
+    //renvoie la description d'un profil à partir de son id
     @GetMapping("/PS/profiles/{id}/description")
     @CrossOrigin
     public String getProfileDescriptionById(@PathVariable(value = "id") long id){
@@ -82,7 +74,7 @@ public class ProfileController {
         return profiles.get(id).getDescription();
     }
 
-    //Documentée
+    //sauvegarde un nouveau profil en passant par AuthService et lui attribue un nouvel id 
     @PostMapping("/PS/profiles")
     @CrossOrigin
     public Profile saveProfile(@RequestBody @Valid Profile profile){
@@ -103,7 +95,10 @@ public class ProfileController {
         return profile;
     }
 
-    //Documentée
+    /*Update le nom d'un profil d'id
+     ProfileNotFoundException dans le cas où on ne trouve pas de profil correspondant à l'id en argument
+    */
+    
     @PutMapping("/PS/profiles/{id}/name")
     @CrossOrigin
     public void updateProfileName(@PathVariable(value = "id") long id, @RequestBody String name){
@@ -114,7 +109,9 @@ public class ProfileController {
         }
     }
 
-    //Documentée
+    /*Update la description d'un profil
+    ProfileNotFoundException dans le cas où on ne trouve pas de profil correspondant à l'id en argument
+    */
     @PutMapping("/PS/profiles/{id}/description")
     @CrossOrigin
     public void updateProfileDescription(@PathVariable(value = "id") long id, @RequestBody String description){
@@ -125,7 +122,9 @@ public class ProfileController {
         }
     }
 
-    //Documentée
+    /*Suppression du profil correspondant à l'id en argument
+    tout les tokens associés à ce profil sont supprimés
+    */
     @DeleteMapping("/PS/profiles/{id}")
     @CrossOrigin
     public void deleteProfile(@PathVariable(value = "id") long id, @RequestHeader(value="X-Token") String token){
@@ -144,6 +143,9 @@ public class ProfileController {
         profiles.remove(id);
     }
 
+    /*Update de l'adresse email d'un profil associé à un id 
+    ProfilNotFoundException dans le cas où aucun profil correspondant à l'id n'est trouvé
+    */
     @PutMapping("/PS/profiles/{id}/email")
     @CrossOrigin
     public Profile update_email(
@@ -163,6 +165,10 @@ public class ProfileController {
         return profile;
     }
 
+    /*login à l'aide d'un email et d'un mot de passe
+    Exception dans le cas ou l'adresse email n'est pas trouvée
+    Exception dans le cas ou le mot de passe est incorrect
+    */
     @PostMapping("/PS/login")
     @CrossOrigin
     public String login(
