@@ -32,7 +32,7 @@ paths:
               $ref: '#/components/schemas/Profile'
       responses:
         200:
-          description: The profile as created.
+          description: The profile as been created.
           content: 
             application/json:
               schema:
@@ -74,6 +74,13 @@ paths:
           schema:
             type: integer
             example: 1
+        - name: X-Token
+          in: header
+          description: Token of the connection
+          required: true
+          schema:
+            type: string
+            example: A57OU78DTE
       responses:
         200:
           description: The profile was deleted.
@@ -170,7 +177,65 @@ paths:
           description: The profile description was updated.
         404:
           description: Profile not found
-
+  /PS/profiles/{id}/email:
+    put:
+      summary: Update profile email
+      description: Update profile email
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: "email@gmail.com"
+      parameters:
+        - name: id
+          in: path
+          description: ID of the profile
+          required: true
+          schema:
+            type: integer
+            example: 1
+        - name: X-Token
+          in: header
+          description: Token of the connection
+          required: true
+          schema:
+            type: string
+            example: A57OU78DTE
+      responses:
+        200:
+          description: The profile email was updated.
+        404:
+          description: Profile not found
+  /PS/login:
+    post:
+      summary: Creates a connection.
+      description: Creates a connection.
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: motdepasse123456
+      parameters:
+        - in: query
+          name: email
+          schema:
+            type: string
+            example: email@gmail.com
+          description: The email of the profile.
+      responses:
+        200:
+          description: The connection has beeen created.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: A57OU78DTE
+        401:
+          description: Wrong password
+        404:
+          description: Profile not found
 components:
   schemas:
     Profile:
