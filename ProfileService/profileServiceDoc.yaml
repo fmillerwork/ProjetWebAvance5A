@@ -32,7 +32,7 @@ paths:
               $ref: '#/components/schemas/Profile'
       responses:
         200:
-          description: The profile as been created.
+          description: The profile has been created.
           content: 
             application/json:
               schema:
