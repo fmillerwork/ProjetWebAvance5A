@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/AuthService/AuthService.iml" filepath="$PROJECT_DIR$/AuthService/AuthService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Gateway/Gateway.iml" filepath="$PROJECT_DIR$/Gateway/Gateway.iml" />
       <module fileurl="file://$PROJECT_DIR$/ProfileService/ProfileService.iml" filepath="$PROJECT_DIR$/ProfileService/ProfileService.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/ProjetWebAvance5A.iml" filepath="$PROJECT_DIR$/.idea/ProjetWebAvance5A.iml" />
     </modules>

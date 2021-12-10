@@ -1,0 +1,197 @@
+openapi: 3.0.0
+
+info:
+  title: Profile Service
+  description : Manages profiles
+  version: 0.0.1
+  
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /PS/profiles:
+    get:
+      summary: Returns a list of all users.
+      description: Returns a list of all users.
+      responses:
+        200:
+          description: All users
+          content: 
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/Profile'
+    post:
+      summary: Create a profile
+      description: Create a profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Profile'
+      responses:
+        200:
+          description: The profile as created.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        409:
+          description: The email address is already used.
+        403:
+          description: The object was not valid.
+
+  /PS/profiles/{id}:
+    get:
+      summary: Return a single profile.
+      description: Return a single profile.
+      parameters:
+        - name: id
+          in: path
+          description: ID of the profile
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: The profile.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        404:
+          description: Profile not found
+    delete:
+      summary: Delete a single profile.
+      description: Delete a single profile.
+      parameters:
+        - name: id
+          in: path
+          description: ID of the profile
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: The profile was deleted.
+        404:
+          description: Profile not found.
+
+  /PS/profiles/{id}/name:
+    get:
+      summary: Return a profile name.
+      description: Return a profile name.
+      parameters:
+        - name: id
+          in: path
+          description: ID of the profile
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: The name of the profile.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Jo le camionneur"
+        404:
+          description: Profile not found
+    put:
+      summary: Update profile name
+      description: Update profile name
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: "Jo le camionneur"
+      parameters:
+        - name: id
+          in: path
+          description: ID of the profile
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: The profile name was updated.
+        404:
+          description: Profile not found
+
+
+  /PS/profiles/{id}/description:
+    get:
+      summary: Return a profile description.
+      description: Return a profile description.
+      parameters:
+        - name: id
+          in: path
+          description: ID of the profile
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: The description of the profile.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Profile de l'administrateur."
+        403:
+          description: Profile not found
+    put:
+      summary: Update profile description
+      description: Update profile description
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: "Profile de l'administrateur."
+      parameters:
+        - name: id
+          in: path
+          description: ID of the profile
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: The profile description was updated.
+        404:
+          description: Profile not found
+
+components:
+  schemas:
+    Profile:
+      type: object
+      properties:
+        id: 
+          type: integer
+          example: "4"
+        name:
+          type: string
+          example: "Jo le camionneur"
+        email:
+          type: string
+          format: email
+          example : "jojo@gmail.com"
+        description:
+          type: string
+          example: "Bonjour"
+      required:
+        - name
+        - email
+        
+        
+  
